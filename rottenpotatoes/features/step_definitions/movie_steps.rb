@@ -4,7 +4,7 @@ Given /the following movies exist/ do |movies_table|
   movies_table.hashes.each do |movie|
     # each returned element will be a hash whose key is the table header.
     # you should arrange to add that movie to the database here.
-    @movie = Movie.create(title: movie[:title], rating: movie[:rating], release_date: movie[:release_date])
+    Movie.create! movie
   end
 end
 
@@ -41,4 +41,10 @@ end
 Then /I should see all the movies/ do
   # Make sure that all the movies in the app are visible in the table
   page.should have_selector('#movies tr', count: 11)
+end
+
+
+Then /^the director of "([^"]*)" should be "([^"]*)"$/ do |title, director|
+    movie = Movie.find_by_title(title)
+    expect(movie.director).to eq director
 end
